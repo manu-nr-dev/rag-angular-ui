@@ -1,0 +1,101 @@
+<div class="rag-shell">
+
+  <!-- Header -->
+  <header class="rag-header">
+    <div class="rag-header__logo">
+      <span class="rag-header__dot"></span>
+      RAG Engine
+    </div>
+    <span class="rag-header__tag">Gemini · pgvector · Spring Boot</span>
+  </header>
+
+  <!-- Search -->
+  <section class="rag-search">
+    <div class="rag-search__box">
+      <textarea
+        class="rag-search__input"
+        [(ngModel)]="query"
+        (keydown)="onKeyDown($event)"
+        placeholder="Ask anything from your knowledge base..."
+        rows="3"
+        [disabled]="loading">
+      </textarea>
+      <button
+        class="rag-search__btn"
+        (click)="ask()"
+        [disabled]="!query.trim() || loading">
+        <span *ngIf="!loading">Ask</span>
+        <span *ngIf="loading" class="rag-search__spinner"></span>
+      </button>
+    </div>
+    <p class="rag-search__hint">Enter to submit · Shift+Enter for new line</p>
+  </section>
+
+  <!-- Loading -->
+  <div class="rag-loading" *ngIf="loading">
+    <div class="rag-loading__bar"></div>
+    <p>Retrieving and generating answer...</p>
+  </div>
+
+  <!-- Error -->
+  <div class="rag-error" *ngIf="error">
+    <span class="rag-error__icon">⚠</span> {{ error }}
+  </div>
+
+  <!-- Response -->
+  <section class="rag-result" *ngIf="response && !loading">
+
+    <!-- Answer -->
+    <div class="rag-answer">
+      <div class="rag-answer__meta">
+        <span class="rag-answer__badge" [class.rag-answer__badge--ok]="response.grounded" [class.rag-answer__badge--warn]="!response.grounded">
+          {{ response.grounded ? '✓ Grounded' : '⚠ Ungrounded' }}
+        </span>
+        <span class="rag-answer__badge rag-answer__badge--neutral">
+          Score: {{ formatScore(response.groundingScore) }}
+        </span>
+        <span class="rag-answer__badge rag-answer__badge--neutral">
+          {{ formatLatency(response.latencyMs) }}
+        </span>
+        <span class="rag-answer__badge rag-answer__badge--neutral">
+          {{ response.sources.length }} sources
+        </span>
+      </div>
+      <p class="rag-answer__text">{{ response.answer }}</p>
+      <p class="rag-answer__warning" *ngIf="response.groundingWarning">
+        ⚠ {{ response.groundingWarning }}
+      </p>
+    </div>
+
+    <!-- Sources -->
+    <div class="rag-sources" *ngIf="response.sources.length > 0">
+      <h3 class="rag-sources__heading">Source Documents</h3>
+      <div
+        class="rag-source"
+        *ngFor="let src of response.sources; let i = index"
+        [class.rag-source--expanded]="isExpanded(i)">
+
+        <div class="rag-source__header" (click)="toggleSource(i)">
+          <div class="rag-source__left">
+            <span class="rag-source__index">{{ i + 1 }}</span>
+            <div class="rag-source__info">
+              <span class="rag-source__title">{{ shortTitle(src.documentTitle) }}</span>
+              <span class="rag-source__meta">Chunk #{{ src.chunkIndex }} · {{ src.source }}</span>
+            </div>
+          </div>
+          <div class="rag-source__right">
+            <span class="rag-source__score">{{ formatScore(src.similarityScore) }}</span>
+            <span class="rag-source__chevron">{{ isExpanded(i) ? '▲' : '▼' }}</span>
+          </div>
+        </div>
+
+        <div class="rag-source__content" *ngIf="isExpanded(i)">
+          <p>{{ src.content }}</p>
+        </div>
+
+      </div>
+    </div>
+
+  </section>
+
+</div>

@@ -1,0 +1,335 @@
+
+$bg:        #0d0f14;
+$surface:   #161922;
+$border:    #252a35;
+$accent:    #4f8ef7;
+$accent2:   #38e2c0;
+$text:      #e8eaf0;
+$muted:     #6b7280;
+$ok:        #34d399;
+$warn:      #f59e0b;
+$error:     #f87171;
+$radius:    10px;
+$font:      'IBM Plex Mono', monospace;
+
+.rag-shell {
+  font-family: $font;
+  background: $bg;
+  min-height: 100vh;
+  color: $text;
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 32px 24px 80px;
+}
+
+// ── Header ─────────────────────────────────────────────────
+.rag-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 40px;
+  border-bottom: 1px solid $border;
+  padding-bottom: 16px;
+
+  &__logo {
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: $text;
+  }
+
+  &__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: $accent2;
+    box-shadow: 0 0 8px $accent2;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  &__tag {
+    font-size: 11px;
+    color: $muted;
+    letter-spacing: 0.06em;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+// ── Search ─────────────────────────────────────────────────
+.rag-search {
+  margin-bottom: 32px;
+
+  &__box {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  &__input {
+    flex: 1;
+    background: $surface;
+    border: 1px solid $border;
+    border-radius: $radius;
+    color: $text;
+    font-family: $font;
+    font-size: 14px;
+    padding: 14px 16px;
+    resize: none;
+    transition: border-color 0.2s;
+    line-height: 1.6;
+
+    &:focus {
+      outline: none;
+      border-color: $accent;
+    }
+
+    &::placeholder { color: $muted; }
+    &:disabled { opacity: 0.5; cursor: not-allowed; }
+  }
+
+  &__btn {
+    background: $accent;
+    border: none;
+    border-radius: $radius;
+    color: #fff;
+    cursor: pointer;
+    font-family: $font;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    padding: 14px 24px;
+    transition: background 0.2s, transform 0.1s;
+    white-space: nowrap;
+    min-width: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover:not(:disabled) { background: lighten($accent, 8%); }
+    &:active:not(:disabled) { transform: scale(0.97); }
+    &:disabled { opacity: 0.4; cursor: not-allowed; }
+  }
+
+  &__spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+  }
+
+  &__hint {
+    font-size: 11px;
+    color: $muted;
+    margin-top: 8px;
+    letter-spacing: 0.04em;
+  }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+// ── Loading ────────────────────────────────────────────────
+.rag-loading {
+  margin-bottom: 24px;
+
+  &__bar {
+    height: 2px;
+    background: linear-gradient(90deg, $accent, $accent2, $accent);
+    background-size: 200%;
+    border-radius: 2px;
+    animation: shimmer 1.4s ease-in-out infinite;
+    margin-bottom: 10px;
+  }
+
+  p {
+    font-size: 12px;
+    color: $muted;
+    letter-spacing: 0.05em;
+  }
+}
+
+@keyframes shimmer {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+
+// ── Error ──────────────────────────────────────────────────
+.rag-error {
+  background: rgba($error, 0.08);
+  border: 1px solid rgba($error, 0.3);
+  border-radius: $radius;
+  color: $error;
+  font-size: 13px;
+  padding: 12px 16px;
+  margin-bottom: 24px;
+
+  &__icon { margin-right: 6px; }
+}
+
+// ── Answer ─────────────────────────────────────────────────
+.rag-answer {
+  background: $surface;
+  border: 1px solid $border;
+  border-left: 3px solid $accent;
+  border-radius: $radius;
+  padding: 20px 24px;
+  margin-bottom: 28px;
+  animation: fadeUp 0.3s ease;
+
+  &__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+
+  &__badge {
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-weight: 500;
+
+    &--ok    { background: rgba($ok, 0.12);   color: $ok;   border: 1px solid rgba($ok, 0.3);   }
+    &--warn  { background: rgba($warn, 0.12); color: $warn; border: 1px solid rgba($warn, 0.3); }
+    &--neutral { background: rgba($muted, 0.1); color: $muted; border: 1px solid rgba($muted, 0.2); }
+  }
+
+  &__text {
+    font-size: 14px;
+    line-height: 1.75;
+    color: $text;
+    margin: 0;
+  }
+
+  &__warning {
+    margin-top: 12px;
+    font-size: 12px;
+    color: $warn;
+  }
+}
+
+// ── Sources ────────────────────────────────────────────────
+.rag-sources {
+  &__heading {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: $muted;
+    margin-bottom: 12px;
+    font-weight: 500;
+  }
+}
+
+.rag-source {
+  background: $surface;
+  border: 1px solid $border;
+  border-radius: $radius;
+  margin-bottom: 8px;
+  overflow: hidden;
+  transition: border-color 0.2s;
+  animation: fadeUp 0.3s ease;
+
+  &:hover { border-color: darken($accent, 10%); }
+  &--expanded { border-color: $accent; }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  &__left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+  }
+
+  &__index {
+    width: 24px;
+    height: 24px;
+    background: rgba($accent, 0.15);
+    color: $accent;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  &__title {
+    font-size: 13px;
+    font-weight: 500;
+    color: $text;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__meta {
+    font-size: 11px;
+    color: $muted;
+    letter-spacing: 0.04em;
+  }
+
+  &__right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+  }
+
+  &__score {
+    font-size: 12px;
+    color: $accent2;
+    font-weight: 500;
+  }
+
+  &__chevron {
+    font-size: 10px;
+    color: $muted;
+  }
+
+  &__content {
+    border-top: 1px solid $border;
+    padding: 14px 16px 14px 52px;
+    animation: fadeUp 0.2s ease;
+
+    p {
+      font-size: 12px;
+      line-height: 1.7;
+      color: darken($text, 15%);
+      margin: 0;
+      white-space: pre-wrap;
+    }
+  }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

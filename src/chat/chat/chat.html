@@ -1,0 +1,53 @@
+
+<div class="chat-container">
+
+  <div class="chat-header">
+    <h1>AI Chat</h1>
+    <div class="header-controls">
+      <label class="toggle-label">
+        <input type="checkbox" [(ngModel)]="useStreaming">
+        Streaming
+      </label>
+      <button class="clear-btn" (click)="clearChat()">Clear</button>
+    </div>
+  </div>
+
+  <div class="messages-container" #messagesContainer>
+    <div *ngIf="messages.length === 0" class="empty-state">
+      Start a conversation...
+    </div>
+
+    <div *ngFor="let message of messages; trackBy: trackByIndex" [class]="'message ' + message.role">
+      <div class="message-bubble">
+        <span class="role-label">{{ message.role === 'user' ? 'You' : 'AI' }}</span>
+        <p>{{ message.content }}</p>
+        <div class="cost-info" *ngIf="message.costUsd">
+          {{ message.totalTokens }} tokens · ${{ message.costUsd | number:'1.6-6' }} · ₹{{ message.costInr |
+          number:'1.4-4' }}
+        </div>
+        <span *ngIf="message.streaming" class="cursor">▋</span>
+      </div>
+    </div>
+
+    <div *ngIf="isLoading && !useStreaming" class="message assistant">
+      <div class="message-bubble">
+        <span class="role-label">AI</span>
+        <p class="thinking">Thinking...</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="input-container">
+    <textarea [(ngModel)]="userInput" (keydown)="onKeyDown($event)"
+      placeholder="Type a message... (Enter to send, Shift+Enter for new line)" rows="2">
+    </textarea>
+    <button (click)="sendMessage()" [disabled]="isLoading || !userInput.trim()">
+      {{ isLoading ? '...' : 'Send' }}
+    </button>
+  </div>
+
+  <div class="session-info" *ngIf="sessionId">
+    Session: {{ sessionId }}
+  </div>
+
+</div>

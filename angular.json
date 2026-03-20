@@ -32,7 +32,12 @@
         },
         "@schematics/angular:service": {
           "skipTests": true
+        },
+        "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
         }
+      }
       },
       "root": "",
       "sourceRoot": "src",
