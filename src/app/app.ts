@@ -2,16 +2,16 @@ import { ChangeDetectionStrategy, Component} from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
+import { RouterModule, RouterOutlet } from '@angular/router';
 
 
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [FormsModule, CommonModule,RouterOutlet],
+  imports: [FormsModule, CommonModule, RouterModule, RouterOutlet],
   templateUrl: './app.html',
-  styleUrl: './app.css',
+  styleUrls: ['./app.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent {

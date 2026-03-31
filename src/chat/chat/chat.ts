@@ -19,7 +19,7 @@ interface Message {
   standalone: true,
   imports: [FormsModule, CommonModule],
   templateUrl: './chat.html',
-  styleUrl: './chat.scss',
+  styleUrls: ['./chat.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ChatComponent { 

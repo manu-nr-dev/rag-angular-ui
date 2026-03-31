@@ -1,0 +1,49 @@
+<div class="agent-container">
+  <h2>AI Agent</h2>
+
+  <div class="input-section">
+    <textarea
+      [(ngModel)]="taskInput"
+      placeholder="Enter your task... e.g. What is the current time? Look up order #123."
+      rows="3"
+      [disabled]="status === 'submitting' || status === 'waiting'">
+    </textarea>
+
+    <div class="actions">
+      <button
+        (click)="submitTask()"
+        [disabled]="status === 'submitting' || status === 'waiting' || !taskInput.trim()">
+        {{ status === 'submitting' ? 'Submitting...' : status === 'waiting' ? 'Waiting for result...' : 'Run Task' }}
+      </button>
+
+      <button
+        class="reset-btn"
+        (click)="reset()"
+        [disabled]="status === 'idle'">
+        Reset
+      </button>
+    </div>
+  </div>
+
+  <!-- Status indicator -->
+
+  <div class="status-bar" *ngIf="status !== 'idle'">
+   <span [ngClass]="status">
+      <span *ngIf="status === 'submitting'">⏳ Submitting...</span>
+      <span *ngIf="status === 'waiting'">🔄 Waiting for Agent...</span>
+      <span *ngIf="status === 'done'">✅ Done</span>
+   </span>
+</div>
+  <!-- Result card -->
+  <div class="result-card" *ngIf="result">
+    <h3>Answer</h3>
+    <p class="answer">{{ result.answer }}</p>
+
+    <div class="meta">
+      <span>🔧 Tools used: {{ result.toolCallsUsed }}</span>
+      <span>🔁 Iterations: {{ result.iterationsUsed }}</span>
+      <span>🪙 Tokens: {{ result.costTokens }}</span>
+      <span>📋 Status: {{ result.status }}</span>
+    </div>
+  </div>
+</div>

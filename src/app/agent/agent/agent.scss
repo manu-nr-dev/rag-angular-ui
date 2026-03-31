@@ -1,0 +1,105 @@
+.agent-container {
+  max-width: 720px;
+  margin: 40px auto;
+  padding: 24px;
+  font-family: sans-serif;
+}
+
+h2 {
+  margin-bottom: 24px;
+  font-size: 1.5rem;
+}
+
+.input-section textarea {
+  width: 100%;
+  padding: 12px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  resize: vertical;
+  box-sizing: border-box;
+}
+
+.actions {
+  margin-top: 12px;
+  display: flex;
+  gap: 12px;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background-color: #1a73e8;
+  color: white;
+}
+
+button:disabled {
+  background-color: #aaa;
+  cursor: not-allowed;
+}
+
+.reset-btn {
+  background-color: #e0e0e0;
+  color: #333;
+}
+
+.status-bar {
+  margin-top: 16px;
+  padding: 10px 14px;
+  border-radius: 6px;
+  background: #f5f5f5;
+  font-size: 0.95rem;
+}
+
+.status-bar .done { color: green; }
+.status-bar .error { color: red; }
+.status-bar .waiting { color: #1a73e8; }
+.status-bar .submitting { color: #888; }
+
+.result-card {
+  margin-top: 24px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fafafa;
+}
+
+.result-card h3 {
+  margin-bottom: 12px;
+  font-size: 1.1rem;
+}
+
+.answer {
+  font-size: 1rem;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  margin-bottom: 16px;
+}
+
+.meta {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    font-size: 0.85rem;
+    color: #555;
+  }
+
+  .raw-response {
+    margin-top: 18px;
+    padding: 16px;
+    background: #202b35;
+    color: #e8f1ff;
+    border-radius: 8px;
+    font-family: monospace;
+    font-size: 0.9rem;
+    overflow-x: auto;
+  }
+
+  .raw-response pre {
+    white-space: pre-wrap;
+    word-break: break-word;
+    margin: 0;
+  }
