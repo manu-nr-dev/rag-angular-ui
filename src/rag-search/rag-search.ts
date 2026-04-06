@@ -1,8 +1,8 @@
-import { Component, ChangeDetectionStrategy, ChangeDetectorRef, signal } from '@angular/core';
+import { Component, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RagService } from '../services/rag.service';
-import { RagResponse, RagSource } from './rag.model';
+import { RagResponse } from './rag.model';
 
 @Component({
   selector: 'app-rag-search',
@@ -15,6 +15,8 @@ import { RagResponse, RagSource } from './rag.model';
 export class RagSearchComponent {
   query = '';
   response: RagResponse | null = null;
+  selectedFile: File | null = null;
+  uploadMessage: string | null = null;
   loading = false;
   error: string | null = null;
   expandedSources = new Set<number>();
@@ -68,6 +70,53 @@ export class RagSearchComponent {
 
   shortTitle(title: string): string {
     return title.replace(/^Rag test_/, '').replace(/\.pdf$/, '');
+  }
+
+  onFileSelected(event: Event): void {
+    this.uploadMessage = null;
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0] ?? null;
+
+    if (!file) {
+      this.selectedFile = null;
+      return;
+    }
+
+    if (file.type !== 'application/pdf') {
+      this.selectedFile = null;
+      this.error = 'Only PDF files are supported. Please select a PDF.';
+      this.cdr.markForCheck();
+      return;
+    }
+
+    this.selectedFile = file;
+    this.error = null;
+    this.cdr.markForCheck();
+  }
+
+  uploadPdf(): void {
+    if (!this.selectedFile || this.loading) {
+      return;
+    }
+
+    const fileName = this.selectedFile.name;
+    this.loading = true;
+    this.error = null;
+    this.uploadMessage = null;
+
+    this.ragService.uploadPdf(this.selectedFile).subscribe({
+      next: () => {
+        this.uploadMessage = `${fileName} uploaded successfully.`;
+        this.selectedFile = null;
+        this.loading = false;
+        this.cdr.markForCheck();
+      },
+      error: () => {
+        this.error = 'Failed to upload PDF. Is the backend running?';
+        this.loading = false;
+        this.cdr.markForCheck();
+      }
+    });
   }
 
   onKeyDown(event: KeyboardEvent): void {

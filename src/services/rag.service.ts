@@ -12,4 +12,10 @@ export class RagService {
   ask(query: string): Observable<RagResponse> {
     return this.http.post<RagResponse>(`${this.API}/ask`, { query });
   }
+
+  uploadPdf(file: File): Observable<void> {
+    const formData = new FormData();
+    formData.append('file', file, file.name);
+    return this.http.post<void>(`${this.API}/upload`, formData);
+  }
 }

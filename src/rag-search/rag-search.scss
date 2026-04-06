@@ -72,6 +72,36 @@ $font:      'IBM Plex Mono', monospace;
     gap: 10px;
   }
 
+  &__upload {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 16px;
+  }
+
+  &__file-label {
+    @include glass;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border-radius: $radius;
+    cursor: pointer;
+    flex: 1;
+    color: $text;
+    font-size: 13px;
+  }
+
+  &__file-label input {
+    display: none;
+  }
+
+  &__message {
+    margin-top: 10px;
+    color: $accent2;
+    font-size: 13px;
+  }
+
   &__input {
     @include glass;
     flex: 1;

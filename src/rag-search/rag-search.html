@@ -28,6 +28,21 @@
         <span *ngIf="loading" class="rag-search__spinner"></span>
       </button>
     </div>
+
+    <div class="rag-search__upload">
+      <label class="rag-search__file-label">
+        <input type="file" accept="application/pdf" (change)="onFileSelected($event)" [disabled]="loading" />
+        <span>{{ selectedFile ? selectedFile.name : 'Choose a PDF to upload' }}</span>
+      </label>
+      <button
+        class="rag-search__btn"
+        (click)="uploadPdf()"
+        [disabled]="!selectedFile || loading">
+        Upload PDF
+      </button>
+    </div>
+
+    <div class="rag-search__message" *ngIf="uploadMessage">{{ uploadMessage }}</div>
     <p class="rag-search__hint">Enter to submit · Shift+Enter for new line</p>
   </section>
 
