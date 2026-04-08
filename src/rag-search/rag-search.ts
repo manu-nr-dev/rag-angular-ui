@@ -15,7 +15,8 @@ import { RagResponse } from './rag.model';
 export class RagSearchComponent {
   query = '';
   response: RagResponse | null = null;
-  selectedFile: File | null = null;
+  documentTitle = '';
+  selectedFiles: File[] = [];
   uploadMessage: string | null = null;
   loading = false;
   error: string | null = null;
@@ -72,47 +73,47 @@ export class RagSearchComponent {
     return title.replace(/^Rag test_/, '').replace(/\.pdf$/, '');
   }
 
-  onFileSelected(event: Event): void {
+  onFilesSelected(event: Event): void {
     this.uploadMessage = null;
     const input = event.target as HTMLInputElement;
-    const file = input.files?.[0] ?? null;
+    const files = Array.from(input.files ?? []);
 
-    if (!file) {
-      this.selectedFile = null;
+    if (files.length === 0) {
+      this.selectedFiles = [];
       return;
     }
 
-    if (file.type !== 'application/pdf') {
-      this.selectedFile = null;
-      this.error = 'Only PDF files are supported. Please select a PDF.';
-      this.cdr.markForCheck();
-      return;
+    const pdfFiles = files.filter((file) => file.type === 'application/pdf');
+    if (pdfFiles.length !== files.length) {
+      this.error = 'Only PDF files are supported. Unsupported files were skipped.';
+    } else {
+      this.error = null;
     }
 
-    this.selectedFile = file;
-    this.error = null;
+    this.selectedFiles = pdfFiles;
     this.cdr.markForCheck();
   }
 
-  uploadPdf(): void {
-    if (!this.selectedFile || this.loading) {
+  uploadDocuments(): void {
+    if (!this.selectedFiles.length || !this.documentTitle.trim() || this.loading) {
       return;
     }
 
-    const fileName = this.selectedFile.name;
+    const doctitle = this.documentTitle.trim();
     this.loading = true;
     this.error = null;
     this.uploadMessage = null;
 
-    this.ragService.uploadPdf(this.selectedFile).subscribe({
+    this.ragService.uploadFiles(this.selectedFiles, doctitle).subscribe({
       next: () => {
-        this.uploadMessage = `${fileName} uploaded successfully.`;
-        this.selectedFile = null;
+        this.uploadMessage = `${this.selectedFiles.length} PDF file(s) uploaded successfully.`;
+        this.selectedFiles = [];
+        this.documentTitle = '';
         this.loading = false;
         this.cdr.markForCheck();
       },
       error: () => {
-        this.error = 'Failed to upload PDF. Is the backend running?';
+        this.error = 'Failed to upload PDFs. Is the backend running?';
         this.loading = false;
         this.cdr.markForCheck();
       }

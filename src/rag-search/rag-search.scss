@@ -74,9 +74,26 @@ $font:      'IBM Plex Mono', monospace;
 
   &__upload {
     display: flex;
-    align-items: center;
+    flex-wrap: wrap;
+    align-items: flex-end;
     gap: 10px;
     margin-top: 16px;
+  }
+
+  &__title-input {
+    @include glass;
+    flex: 1 1 320px;
+    min-width: 240px;
+    border-radius: $radius;
+    padding: 14px 16px;
+    color: $text;
+    font-size: 14px;
+    border: none;
+  }
+
+  &__upload > .rag-search__btn {
+    align-self: flex-end;
+    white-space: nowrap;
   }
 
   &__file-label {
@@ -87,7 +104,6 @@ $font:      'IBM Plex Mono', monospace;
     padding: 12px 16px;
     border-radius: $radius;
     cursor: pointer;
-    flex: 1;
     color: $text;
     font-size: 13px;
   }
